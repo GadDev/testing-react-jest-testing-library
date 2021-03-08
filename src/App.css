@@ -15,3 +15,14 @@
 	min-width: 20rem;
 	transition: background 0.3s ease;
 }
+
+.App main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.checkbox-field {
+	margin-top: 2rem;
+}
