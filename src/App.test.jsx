@@ -18,32 +18,55 @@ describe("Button", () => {
   });
 });
 
-describe("Checkbox", () => {
-  test("initial conditions", () => {
-    render(<App />);
-    // check that the button starts out enabled
-    const coloredBtn = screen.getByRole("button", {
-      name: "Change to blue",
-    });
-    expect(coloredBtn).toBeEnabled();
-    // check that the checkbox starts out unchecked
-    const checkbox = screen.getByRole("checkbox");
-    expect(checkbox).not.toBeChecked();
+test("initial conditions", () => {
+  render(<App />);
+  // check that the button starts out enabled
+  const coloredBtn = screen.getByRole("button", {
+    name: "Change to blue",
+  });
+  expect(coloredBtn).toBeEnabled();
+  // check that the checkbox starts out unchecked
+  const checkbox = screen.getByRole("checkbox");
+  expect(checkbox).not.toBeChecked();
+});
+
+test("Button is disabled when the checkbox is checked and the button is enabled if the checkbox is unchecked", () => {
+  render(<App />);
+  const coloredBtn = screen.getByRole("button", {
+    name: "Change to blue",
+  });
+  const checkbox = screen.getByRole("checkbox", {
+    name: "Disable button",
   });
 
-  test("Button is disabled when the checkbox is checked and the button is enabled if the checkbox is unchecked", () => {
-    render(<App />);
-    const coloredBtn = screen.getByRole("button", {
-      name: "Change to blue",
-    });
-    const checkbox = screen.getByRole("checkbox", {
-      name: "Disable button",
-    });
+  fireEvent.click(checkbox);
+  expect(coloredBtn).toBeDisabled();
 
-    fireEvent.click(checkbox);
-    expect(coloredBtn).toBeDisabled();
+  fireEvent.click(checkbox);
+  expect(coloredBtn).toBeEnabled();
+});
 
-    fireEvent.click(checkbox);
-    expect(coloredBtn).toBeEnabled();
+test("Button gray when disabled", () => {
+  render(<App />);
+  const coloredBtn = screen.getByRole("button", {
+    name: "Change to blue",
+  });
+  const checkbox = screen.getByRole("checkbox", {
+    name: "Disable button",
+  });
+  // disabled btn
+  fireEvent.click(checkbox);
+  expect(coloredBtn).toHaveStyle({
+    backgroundColor: "gray",
+  });
+  // enable btn
+  fireEvent.click(checkbox);
+  expect(coloredBtn).toHaveStyle({
+    backgroundColor: "red",
+  });
+  // change btn to blue
+  fireEvent.click(coloredBtn);
+  expect(coloredBtn).toHaveStyle({
+    backgroundColor: "blue",
   });
 });
