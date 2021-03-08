@@ -36,7 +36,9 @@ describe("Checkbox", () => {
     const coloredBtn = screen.getByRole("button", {
       name: "Change to blue",
     });
-    const checkbox = screen.getByRole("checkbox");
+    const checkbox = screen.getByRole("checkbox", {
+      name: "Disable button",
+    });
 
     fireEvent.click(checkbox);
     expect(coloredBtn).toBeDisabled();
