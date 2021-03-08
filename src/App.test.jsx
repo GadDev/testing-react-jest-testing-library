@@ -1,20 +1,24 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import App from "./App";
+import App, { replaceCamelWithSpaces } from "./App";
 
 describe("Button", () => {
   test("button has the correct initial color", () => {
     render(<App />);
-    const colorBtn = screen.getByRole("button", { name: "Change to blue" });
-    expect(colorBtn).toHaveStyle({ background: "red" });
+    const colorBtn = screen.getByRole("button", {
+      name: "Change to Midnight Blue",
+    });
+    expect(colorBtn).toHaveStyle({ background: "MediumVioletRed" });
   });
 
-  test("button turns blue when clicked", () => {
+  test("button turns Midnight Blue when clicked", () => {
     render(<App />);
-    const colorBtn = screen.getByRole("button", { name: "Change to blue" });
+    const colorBtn = screen.getByRole("button", {
+      name: "Change to Midnight Blue",
+    });
     fireEvent.click(colorBtn);
-    expect(colorBtn).toHaveStyle({ background: "blue" });
-    expect(colorBtn.textContent).toBe("Change to red");
+    expect(colorBtn).toHaveStyle({ background: "MidnightBlue" });
+    expect(colorBtn.textContent).toBe("Change to Medium Violet Red");
   });
 });
 
@@ -22,7 +26,7 @@ test("initial conditions", () => {
   render(<App />);
   // check that the button starts out enabled
   const coloredBtn = screen.getByRole("button", {
-    name: "Change to blue",
+    name: "Change to Midnight Blue",
   });
   expect(coloredBtn).toBeEnabled();
   // check that the checkbox starts out unchecked
@@ -33,7 +37,7 @@ test("initial conditions", () => {
 test("Button is disabled when the checkbox is checked and the button is enabled if the checkbox is unchecked", () => {
   render(<App />);
   const coloredBtn = screen.getByRole("button", {
-    name: "Change to blue",
+    name: "Change to Midnight Blue",
   });
   const checkbox = screen.getByRole("checkbox", {
     name: "Disable button",
@@ -49,7 +53,7 @@ test("Button is disabled when the checkbox is checked and the button is enabled 
 test("Button gray when disabled", () => {
   render(<App />);
   const coloredBtn = screen.getByRole("button", {
-    name: "Change to blue",
+    name: "Change to Midnight Blue",
   });
   const checkbox = screen.getByRole("checkbox", {
     name: "Disable button",
@@ -62,11 +66,25 @@ test("Button gray when disabled", () => {
   // enable btn
   fireEvent.click(checkbox);
   expect(coloredBtn).toHaveStyle({
-    backgroundColor: "red",
+    backgroundColor: "MediumVioletRed",
   });
   // change btn to blue
   fireEvent.click(coloredBtn);
   expect(coloredBtn).toHaveStyle({
-    backgroundColor: "blue",
+    backgroundColor: "MidnightBlue",
+  });
+});
+
+describe("Space before camel-case capital letters", () => {
+  test("Works for no inner capital letters", () => {
+    expect(replaceCamelWithSpaces("Red")).toBe("Red");
+  });
+
+  test("Works for one inner capital letter", () => {
+    expect(replaceCamelWithSpaces("MidnightBlue")).toBe("Midnight Blue");
+  });
+
+  test("Works for multiple inner capital letter", () => {
+    expect(replaceCamelWithSpaces("MediumViolet")).toBe("Medium Violet");
   });
 });
